@@ -4,7 +4,18 @@ Main: read the entire file. send the text to the parser.
 Parser: Read the text line by line. verify correctness with syntax rules (using regex). build an array of line objects.
 
 Executer: gets the array of line objects. execute line by line.
-need to add elements of interpreter, for example: an array of the program variables. 
+need to add elements of interpreter, for example: an array of the program variables (look at code context).
+
+CodeContext: To make the design better we need the line.run() to have a context.
+the context would be everything that the program needs:
+	- array of variables and their values
+	- next line to run
+	- more stuff we come up with
+So basically in the executer class we would see something like:
+	while(...)
+		line = getNextLine(codeContext); //codeContext knows what is the next line
+		line.run(codeContext);
+
 
 Sharon: Parser (regex)
 Guy: 
