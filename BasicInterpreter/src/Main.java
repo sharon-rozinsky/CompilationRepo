@@ -13,6 +13,7 @@ public class Main {
 		System.out.println("Another change");
 		
 		int x = 4;
+		int y = 5;
 	}
 
 }
