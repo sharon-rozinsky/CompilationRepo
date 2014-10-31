@@ -1,0 +1,11 @@
+TODO:
+Main: read the entire file. send the text to the parser.
+
+Parser: Read the text line by line. verify correctness with syntax rules (using regex). build an array of line objects.
+
+Executer: gets the array of line objects. execute line by line.
+need to add elements of interpreter, for example: an array of the program variables. 
+
+Sharon: Parser (regex)
+Guy: 
+Tom:
