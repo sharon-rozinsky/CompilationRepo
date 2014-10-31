@@ -7,7 +7,7 @@ public class Main {
 		System.out.println("Guy");
 		System.out.println("Sharon1");
 		
-		System.out.println("Fuck'in Test");
+		System.out.println("Fuck'in Testing");
 	}
 
 }
