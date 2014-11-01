@@ -32,8 +32,13 @@ public class Expression {
 		else // Compound expression
 		{
 			calculationStk = new Stack<String>();
-
-
+			String[] symbols = this.expStr.split(" ");
+			for(String symbol:symbols)
+			{
+				calculationStk.push(symbol);
+			}
+			
+			//TODO Complete by Guy.
 			return evalAns;
 		}
 
