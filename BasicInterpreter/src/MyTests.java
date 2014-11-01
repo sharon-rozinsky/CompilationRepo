@@ -41,9 +41,12 @@ public class MyTests {
 	public void intNull(){
 		Map<Character, Integer> varHeap = new HashMap<Character, Integer>();
 		int x = -1;
-		
-		x = 
-
+		try {
+		x = varHeap.get('c');
+		} catch (NullPointerException e)
+		{
+		System.out.println(e.getMessage());
+		}
 	}
 
 }

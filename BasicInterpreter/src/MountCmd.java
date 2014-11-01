@@ -3,14 +3,24 @@ public class MountCmd extends Line {
 
 	private char 		var;
 	private Expression 	expression;
-	public MountCmd(CommandLine_e type) {
-		super(CommandLine_e.MOUNT_CMD);
-		// TODO Auto-generated constructor stub
+	public MountCmd(CommandLine_e type,int lineIndex, char var, String expStr) {
+		super(CommandLine_e.MOUNT_CMD, lineIndex);
+		this.var = var;
+		this.expression = new Expression(expStr);
 	}
 	
-	public int run() {
+	public int run(CodeContext codeContext) {
 		
-		return 0;
+		int val = expression.evalExpression(codeContext, super.getLineIndex());
+		if(val != -1)
+		{
+			codeContext.getVarHeap().put(this.var, val);
+			return 1;
+		}
+		else
+		{
+			return -1;
+		}
 	}
 	
 	/**

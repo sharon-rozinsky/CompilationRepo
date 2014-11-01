@@ -1,6 +1,6 @@
 
 public interface iLine {
 		
-	public int run();
+	public int run(CodeContext codeContext);
 
 }

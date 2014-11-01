@@ -1,15 +1,17 @@
 
 public class Line implements iLine{
 
-	private CommandLine_e type;
+	private CommandLine_e	type;
+	private int				lineIndex;
 	
 	
-	public Line(CommandLine_e type) {
+	public Line(CommandLine_e type, int lineIndex) {
 		this.setType(type);
+		this.setLineIndex(lineIndex);
 	}
 	
 	@Override
-	public int run() {
+	public int run(CodeContext codeContext) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -26,6 +28,20 @@ public class Line implements iLine{
 	 */
 	public void setType(CommandLine_e type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the lineIndex
+	 */
+	public int getLineIndex() {
+		return lineIndex;
+	}
+
+	/**
+	 * @param lineIndex the lineIndex to set
+	 */
+	public void setLineIndex(int lineIndex) {
+		this.lineIndex = lineIndex;
 	}
 
 }

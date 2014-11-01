@@ -1,36 +1,42 @@
+import java.util.Stack;
+
 
 public class Expression {
-	
+
 	private String expStr;
 
 	public Expression(String expStr) {
 		this.expStr = expStr;
 	}
-	
-	public int evalExpression(Expression exp, CodeContext codeContext) {
-		
+
+	public int evalExpression(CodeContext codeContext, int lineIndex) {
+
 		int evalAns = -1;
-		
-		if(exp.isNumber())
+		Stack<String> calculationStk;
+
+		if(this.isNumber())
 		{
-			return Integer.parseInt(exp.expStr);
+			return Integer.parseInt(this.expStr);
 		}
-		else if(exp.isVariable()) 
+		else if(this.isVariable()) 
 		{
-			evalAns = codeContext.getVarHeap().get(exp.expStr); 
-			if (evalAns)
-			{
-				return 
+			try {
+				evalAns = codeContext.getVarHeap().get(this.expStr); 
+				return evalAns;
+			} catch(NullPointerException e) {
+				Logger.PrintError(lineIndex, 4);
+				return -1; //run time error occurred stop execution.
 			}
+
 		}
 		else // Compound expression
 		{
-			
-			
-			
+			calculationStk = new Stack<String>();
+
+
 			return evalAns;
 		}
-		
+
 	}
 
 	private boolean isVariable() {
@@ -42,7 +48,7 @@ public class Expression {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
+
+
 
 }
