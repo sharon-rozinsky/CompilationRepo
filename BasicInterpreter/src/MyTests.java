@@ -1,7 +1,9 @@
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -33,6 +35,15 @@ public class MyTests {
 		file.add("50: if(x > y) if(x >= z) goto 12;");
 		Parser p = new Parser(file);
 		p.LexicalAnalysis();
+	}
+	
+	@Test
+	public void intNull(){
+		Map<Character, Integer> varHeap = new HashMap<Character, Integer>();
+		int x = -1;
+		
+		x = 
+
 	}
 
 }
