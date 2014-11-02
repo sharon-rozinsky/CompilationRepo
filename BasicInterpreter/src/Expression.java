@@ -21,7 +21,7 @@ public class Expression {
 		else if(this.isVariable()) 
 		{
 			try {
-				evalAns = codeContext.getVarHeap().get(this.expStr); 
+				evalAns = codeContext.getVarHeap().get(this.expStr.charAt(0)); 
 				return evalAns;
 			} catch(NullPointerException e) {
 				Logger.PrintError(lineIndex, 4);
@@ -42,7 +42,7 @@ public class Expression {
 			{
 				calculationStk.push(symbol);
 			}
-			while(!calculationStk.isEmpty())
+			while(calculationStk.size() > 1)
 			{
 				numOfArgs =0;
 				while(numOfArgs < 2)
@@ -65,7 +65,7 @@ public class Expression {
 				case "*":
 					evalAns = args[1] * args[0];
 					break;
-				case "\\":
+				case "/":
 					evalAns = args[1] / args[0];
 					break;
 				}

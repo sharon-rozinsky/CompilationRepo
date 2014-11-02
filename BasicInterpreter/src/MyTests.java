@@ -39,14 +39,10 @@ public class MyTests {
 	
 	@Test
 	public void intNull(){
-		int y;
-		try
-		{
-		y = Integer.parseInt("123");
-		System.out.println(y);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+		CodeContext codeContext = new CodeContext();
+		codeContext.getVarHeap().put('x',1);
+		Expression test = new Expression("+ 1 / 4 * 3 2");
+		System.out.println(test.evalExpression(codeContext, 1));
 	}
 
 }
