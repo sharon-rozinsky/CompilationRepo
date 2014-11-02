@@ -4,8 +4,8 @@ public class IfCmd extends Line{
 	private BoolOP_e boolOP;
 	private Line line;
 	
-	public IfCmd(CommandLine_e type, int lineIndex, char var1, char var2, BoolOP_e boolOP, Line line) {
-		super(type, lineIndex);
+	public IfCmd(int lineIndex, char var1, char var2, BoolOP_e boolOP, Line line) {
+		super(lineIndex);
 		this.var1 = var1;
 		this.var2 = var2;
 		this.boolOP = boolOP;

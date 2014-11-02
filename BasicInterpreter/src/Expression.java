@@ -21,7 +21,7 @@ public class Expression {
 		else if(this.isVariable()) 
 		{
 			try {
-				evalAns = codeContext.getVarHeap().get(this.expStr); 
+				evalAns = codeContext.getVarHeap().get(this.expStr.charAt(0)); 
 				return evalAns;
 			} catch(NullPointerException e) {
 				Logger.PrintError(lineIndex, 4);
@@ -32,26 +32,70 @@ public class Expression {
 		else // Compound expression
 		{
 			calculationStk = new Stack<String>();
-			String[] symbols = this.expStr.split(" ");
+			String[] 	symbols = this.expStr.split(" ");
+			Expression 	argStr;
+			int 		numOfArgs;
+			int[] 		args = new int[2];
+			String 		binOp;
+			
 			for(String symbol:symbols)
 			{
 				calculationStk.push(symbol);
 			}
-			
-			//TODO Complete by Guy.
+			while(calculationStk.size() > 1)
+			{
+				numOfArgs =0;
+				while(numOfArgs < 2)
+				{
+					argStr = new Expression(calculationStk.pop());
+					args[numOfArgs] = argStr.evalExpression(codeContext, lineIndex);
+					numOfArgs++;
+				}
+				
+				binOp = calculationStk.pop();
+				
+				switch(binOp)
+				{
+				case "+":
+					evalAns = args[1] + args[0];
+					break;
+				case "-":
+					evalAns = args[1] - args[0];
+					break;
+				case "*":
+					evalAns = args[1] * args[0];
+					break;
+				case "/":
+					evalAns = args[1] / args[0];
+					break;
+				}
+				
+				calculationStk.push(Integer.toString(evalAns));
+				
+			}
 			return evalAns;
 		}
 
 	}
 
 	private boolean isVariable() {
-		// TODO Auto-generated method stub
-		return false;
+		if(this.expStr.length() == 1 && (Character.isAlphabetic(this.expStr.charAt(0))))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	private boolean isNumber() {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			Integer.parseInt(this.expStr);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 

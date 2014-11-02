@@ -3,8 +3,8 @@ public class MountCmd extends Line {
 
 	private char 		var;
 	private Expression 	expression;
-	public MountCmd(CommandLine_e type,int lineIndex, char var, String expStr) {
-		super(CommandLine_e.MOUNT_CMD, lineIndex);
+	public MountCmd(int lineIndex, char var, String expStr) {
+		super(lineIndex);
 		this.var = var;
 		this.expression = new Expression(expStr);
 	}

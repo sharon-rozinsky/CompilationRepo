@@ -1,34 +1,14 @@
 
-public class Line implements iLine{
+public abstract class Line {
 
-	private CommandLine_e	type;
-	protected int			lineIndex;
+	protected int lineIndex;
 	
 	
-	public Line(CommandLine_e type, int lineIndex) {
-		this.setType(type);
+	public Line(int lineIndex) {
 		this.setLineIndex(lineIndex);
 	}
 	
-	@Override
-	public int run(CodeContext codeContext) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public CommandLine_e getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(CommandLine_e type) {
-		this.type = type;
-	}
+	public abstract int run(CodeContext codeContext);
 
 	/**
 	 * @return the lineIndex

@@ -39,14 +39,10 @@ public class MyTests {
 	
 	@Test
 	public void intNull(){
-		Map<Character, Integer> varHeap = new HashMap<Character, Integer>();
-		int x = -1;
-		try {
-		x = varHeap.get('c');
-		} catch (NullPointerException e)
-		{
-		System.out.println(e.getMessage());
-		}
+		CodeContext codeContext = new CodeContext();
+		codeContext.getVarHeap().put('x',1);
+		Expression test = new Expression("+ 1 / 4 * 3 2");
+		System.out.println(test.evalExpression(codeContext, 1));
 	}
 
 }
