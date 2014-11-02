@@ -2,7 +2,7 @@
 public class Line implements iLine{
 
 	private CommandLine_e	type;
-	private int				lineIndex;
+	protected int			lineIndex;
 	
 	
 	public Line(CommandLine_e type, int lineIndex) {
