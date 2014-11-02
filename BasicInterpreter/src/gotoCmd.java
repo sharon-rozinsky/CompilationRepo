@@ -1,22 +1,19 @@
 
-import java.util.HashMap;
-
-
 public class gotoCmd {
 
 	private int label;
-	HashMap<Integer,Integer> Hash = new HashMap<Integer,Integer>();
 	
 	public gotoCmd(int label) {
 		super();
 		this.label = label;
 	}
 	
-	public int evalGoto() {
+	public int run(CodeContext codeContext) {
 		int index;
 		
-		index = Hash.get(this.label);
-		return index;
+		index = codeContext.getLineToIdx().get(this.label);
+		codeContext.setNextCmd(index);
+		return 1;
 	}
 	
 	public int getLabel() {
