@@ -2,8 +2,8 @@
 public class PrintCmd extends Line {
 	
 	private Expression expression;
-	public PrintCmd(CommandLine_e type, int lineIndex, String expStr) {
-		super(type, lineIndex);
+	public PrintCmd(int lineIndex, String expStr) {
+		super(lineIndex);
 		this.expression = new Expression(expStr);
 	}
 	

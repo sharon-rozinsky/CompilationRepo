@@ -39,13 +39,13 @@ public class MyTests {
 	
 	@Test
 	public void intNull(){
-		Map<Character, Integer> varHeap = new HashMap<Character, Integer>();
-		int x = -1;
-		try {
-		x = varHeap.get('c');
-		} catch (NullPointerException e)
+		int y;
+		try
 		{
-		System.out.println(e.getMessage());
+		y = Integer.parseInt("123");
+		System.out.println(y);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
 
