@@ -11,7 +11,8 @@ public class Main {
 	public static void main(String[] args) {
 
 		BufferedReader inProgramTxtStream = null;
-		List<String> programTxt = new ArrayList<String>();		
+		List<String> programTxt = new ArrayList<String>();
+		
 		//Read Program text file.
 		try {   
 			inProgramTxtStream = new BufferedReader(new FileReader(args[0]));
@@ -38,7 +39,8 @@ public class Main {
 		Parser parser = new Parser(programTxt);
 		if(parser.LexicalAnalysis())
 		{ //Passed compilation continue to execution.
-			
+			Executer exe = new Executer(new CodeContext(parser.getLabelsMapping()), parser.getLines());
+			exe.execute();
 		}
 		else //Compilation errors print errors from logger.
 		{

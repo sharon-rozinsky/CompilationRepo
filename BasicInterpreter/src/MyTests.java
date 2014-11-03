@@ -1,9 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Test;
 
@@ -39,7 +37,7 @@ public class MyTests {
 	
 	@Test
 	public void intNull(){
-		CodeContext codeContext = new CodeContext();
+		CodeContext codeContext = new CodeContext(null);
 		codeContext.getVarHeap().put('x',1);
 		Expression test = new Expression("+ 1 / 4 * 3 2");
 		System.out.println(test.evalExpression(codeContext, 1));

@@ -11,7 +11,7 @@ public class gotoCmd extends Line{
 	public int run(CodeContext codeContext) {
 		int index;
 		
-		index = codeContext.getLineToIdx().get(this.label);
+		index = codeContext.getLabelsMapping().get(this.label);
 		codeContext.setNextCmd(index);
 		return 1;
 	}
