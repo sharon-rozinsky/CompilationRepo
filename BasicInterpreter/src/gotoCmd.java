@@ -13,7 +13,7 @@ public class gotoCmd extends Line{
 		
 		index = codeContext.getLabelsMapping().get(this.label);
 		codeContext.setNextCmd(index);
-		return 1;
+		return 0;
 	}
 	
 	public int getLabel() {

@@ -22,8 +22,11 @@ public class IfCmd extends Line{
 		{
 			line.run(codeContext);
 		}
-		
-		return 1;	
+		else
+		{
+			codeContext.setNextCmd(codeContext.getNextCmd()+1);
+		}
+		return 0;	
 	}
 	
 	public Boolean evalBooleanOP(CodeContext codeContext, String boolOP, char var1, char var2){

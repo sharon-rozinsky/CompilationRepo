@@ -15,11 +15,12 @@ public class MountCmd extends Line {
 		if(val != -1)
 		{
 			codeContext.getVarHeap().put(this.var, val);
-			return 1;
+			codeContext.setNextCmd(codeContext.getNextCmd()+1);
+			return 0;
 		}
 		else
 		{
-			return -1;
+			return 1;
 		}
 	}
 	

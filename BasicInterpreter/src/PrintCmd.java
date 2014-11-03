@@ -12,11 +12,12 @@ public class PrintCmd extends Line {
 		if(val != -1)
 		{
 			Logger.Print(val);
-			return 1;
+			codeContext.setNextCmd(codeContext.getNextCmd()+1);
+			return 0;
 		}
 		else
 		{
-			return -1;
+			return 1;
 		}
 		
 	}
