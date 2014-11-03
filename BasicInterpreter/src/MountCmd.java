@@ -11,15 +11,14 @@ public class MountCmd extends Line {
 	
 	public int run(CodeContext codeContext) {
 		
-		int val = expression.evalExpression(codeContext, super.getLineIndex());
-		if(val != -1)
-		{
+		int val;
+		try {
+			val = expression.evalExpression(codeContext, super.getLineIndex());
 			codeContext.getVarHeap().put(this.var, val);
 			codeContext.setNextCmd(codeContext.getNextCmd()+1);
 			return 0;
-		}
-		else
-		{
+		} catch (Exception e) {
+			//run time error occurred stop execution.
 			return 1;
 		}
 	}

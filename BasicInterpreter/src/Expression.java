@@ -9,7 +9,7 @@ public class Expression {
 		this.expStr = expStr;
 	}
 
-	public int evalExpression(CodeContext codeContext, int lineIndex) {
+	public int evalExpression(CodeContext codeContext, int lineIndex) throws Exception{
 
 		int evalAns = -1;
 		Stack<String> calculationStk;
@@ -23,9 +23,9 @@ public class Expression {
 			try {
 				evalAns = codeContext.getVarHeap().get(this.expStr.charAt(0)); 
 				return evalAns;
-			} catch(NullPointerException e) {
+			} catch(Exception e) {
 				Logger.PrintError(lineIndex, 4);
-				return -1; //run time error occurred stop execution.
+				throw e; //run time error occurred stop execution.
 			}
 
 		}
@@ -48,7 +48,12 @@ public class Expression {
 				while(numOfArgs < 2)
 				{
 					argStr = new Expression(calculationStk.pop());
-					args[numOfArgs] = argStr.evalExpression(codeContext, lineIndex);
+					try {
+						args[numOfArgs] = argStr.evalExpression(codeContext, lineIndex);
+					} catch (Exception e) {
+						//run time error occurred stop execution.
+						throw e;
+					}
 					numOfArgs++;
 				}
 				

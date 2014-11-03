@@ -40,7 +40,6 @@ public class MyTests {
 		CodeContext codeContext = new CodeContext(null);
 		codeContext.getVarHeap().put('x',1);
 		Expression test = new Expression("+ 1 / 4 * 3 2");
-		System.out.println(test.evalExpression(codeContext, 1));
 	}
 
 }

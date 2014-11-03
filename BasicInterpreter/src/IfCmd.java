@@ -34,7 +34,6 @@ public class IfCmd extends Line{
 		int v1 = evalVar(codeContext, lineIndex, var1);
 		int v2 = evalVar(codeContext, lineIndex, var2);
 		Boolean res = false;
-		
 		switch (boolOP) {
 		case ">":
 			if (v1 > v2) res = true;

@@ -8,15 +8,14 @@ public class PrintCmd extends Line {
 	}
 	
 	public int run(CodeContext codeContext) {
-		int val = this.expression.evalExpression(codeContext, super.getLineIndex());
-		if(val != -1)
-		{
+		int val;
+		try {
+			val = this.expression.evalExpression(codeContext, super.getLineIndex());
 			Logger.Print(val);
 			codeContext.setNextCmd(codeContext.getNextCmd()+1);
 			return 0;
-		}
-		else
-		{
+		} catch (Exception e) {
+			//run time error occurred stop execution.
 			return 1;
 		}
 		
