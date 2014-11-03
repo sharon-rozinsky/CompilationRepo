@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 
 public class Parser {
-	public static final String LINE_PATTERN = "(\\d*)\\s*:(.*);";
+	public static final String LINE_PATTERN = "(\\d*)\\s:(.*);";
 	public static final String BINARY_OPERATOR = "(\\+|\\*|\\-|\\/)";
 	public static final String VARIABLE = "([a-z])";
 	public static final String NUMBER = "([1-9][0-9]*|0)";
