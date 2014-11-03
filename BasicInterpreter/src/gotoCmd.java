@@ -1,10 +1,10 @@
 
-public class gotoCmd {
+public class gotoCmd extends Line{
 
 	private int label;
 	
-	public gotoCmd(int label) {
-		super();
+	public gotoCmd(int index, int label) {
+		super(index);
 		this.label = label;
 	}
 	

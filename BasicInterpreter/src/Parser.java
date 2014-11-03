@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,8 +8,8 @@ import java.util.regex.Pattern;
 public class Parser {
 	public static final String LINE_PATTERN = "(\\d*)\\s*:(.*);";
 	public static final String BINARY_OPERATOR = "(\\+|\\*|\\-|\\/)";
-	public static final String VARIABLE = "[a-z]";
-	public static final String NUMBER = "[1-9][0-9]*|0";
+	public static final String VARIABLE = "([a-z])";
+	public static final String NUMBER = "([1-9][0-9]*|0)";
 	public static final String NUMBER_OR_VARIABLE = NUMBER + "|" + VARIABLE;
 	public static final String BOOLEAN_OPERATOR = "(\\<|\\>|\\<=|\\>\\=|\\=\\=|\\!\\=)";
 	
@@ -18,9 +19,12 @@ public class Parser {
 	public static final String PRINT = "print\\((.*)\\)";
 	public static final String IF = "if\\(" + VARIABLE + "\\s" + BOOLEAN_OPERATOR + "\\s" + VARIABLE + "\\)\\s(.*)";  
 	
-	public List<String> file;
-	public ArrayList<Integer> labels = new ArrayList<Integer>();
-	public int currentLine;
+	private List<String> file;
+	private ArrayList<Integer> labels = new ArrayList<Integer>();
+	private HashMap<Integer, Integer> labelsMapping = new HashMap<Integer, Integer>();
+	private HashMap<Integer, Line> lines = new HashMap<Integer, Line>();
+	private int currentLabel;
+	private int currentLine = 1;
 	
 	public Parser(List<String> file){
 		this.file = file;
@@ -43,36 +47,46 @@ public class Parser {
 	 * @return
 	 */
 	public boolean LexicalAnalysis(){
+		
 		for(String line : file){
 			Matcher matcher = getMatcher(LINE_PATTERN, line);
 			if(matcher.matches()){
-				currentLine = Integer.parseInt(matcher.group(1).trim());
+				currentLabel = Integer.parseInt(matcher.group(1).trim());
 				String lineValue = matcher.group(2).trim();
-				if(!validateLine(lineValue)){
+				if(validateLine(lineValue) == null){
 					Logger.PrintError(currentLine, 1);
 				}
-			}	
+			} else{
+				Logger.PrintError(currentLine, 1);
+			}
+			labelsMapping.put(currentLabel, currentLine);
+			currentLine++;
 		}
 		Logger.printLabelErrors();
+		if(Logger.compileErrors()){
+			return false;
+		}
 		return true;
 	}
 	
 	/**
-	 * Create a list of all labels in the give code.
+	 * Create a list of all labels in the given code.
 	 * This will be used to log errors of types 2 and 3.
 	 */
 	private void createLabelsList(){
+		int lineNumber = 1;
 		for(String line : file){
 			Matcher matcher = getMatcher(LINE_PATTERN, line);
 			if(matcher.matches()){
 				Integer label = Integer.parseInt(matcher.group(1).trim());
 				if(!labels.isEmpty()){
-					if(label <= labels.get(labels.size()-1)){
-						Logger.error(label, 3);
+					if(label <= labels.get(labels.size() - 1)){
+						Logger.error(lineNumber, 3);
 					}
 				}
 				labels.add(label);
 			}
+			lineNumber++;
 		}
 	}
 	
@@ -81,18 +95,31 @@ public class Parser {
 	 * @param line
 	 * @return
 	 */
-	public boolean validateLine(String line){ 
-		if(checkAssignment(line)){
-			return true;
-		} else if(checkGoto(line)){
-			return true;
-		} else if(checkPrint(line)){
-			return true;
-		} else if(checkIf(line)){
-			return true;
+	public Line validateLine(String line){ 
+		Line lineObj = checkAssignment(line);
+		if(lineObj != null){
+			addLineObject(currentLine, lineObj);
+			return lineObj;
 		}
 		
-		return false;
+		lineObj = checkGoto(line);
+		if(lineObj != null){
+			addLineObject(currentLine, lineObj);
+			return lineObj;
+		}
+		
+		lineObj = checkPrint(line);
+		if(lineObj != null){
+			addLineObject(currentLine, lineObj);
+			return lineObj;
+		}
+		
+		lineObj = checkIf(line);
+		if(lineObj != null){
+			return lineObj;
+		}
+		
+		return null;
 	}
 
 	/**
@@ -100,18 +127,26 @@ public class Parser {
 	 * @param line
 	 * @return
 	 */
-	private boolean checkAssignment(String line) {
+	private Line checkAssignment(String line) {
+		boolean legalAssignment = false;
+		String variable, assignmentValue;
+		
 		Matcher matcher = getMatcher(ASSIGNMENT, line);
 		if(matcher.matches()){
-			String assignmentValue = matcher.group(1).trim();
+			variable = matcher.group(1).trim();
+			assignmentValue = matcher.group(2).trim();
 			matcher = getMatcher(NUMBER_OR_VARIABLE, assignmentValue);
 			if(matcher.matches()){
-				return true;
-			} else{
-				 return checkBinaryOperation(assignmentValue); 
+				legalAssignment = true; 
+			} else if(checkBinaryOperation(assignmentValue)){
+					legalAssignment = true;
+		 	}
+			
+			if(legalAssignment){
+				return new MountCmd(currentLine, variable.charAt(0), assignmentValue);
 			}
 		}
-		return false;
+		return null;
 	}
 
 	/**
@@ -147,17 +182,16 @@ public class Parser {
 	 * @param line
 	 * @return
 	 */
-	private boolean checkGoto(String line) {
+	private Line checkGoto(String line) {
 		Matcher matcher = getMatcher(GOTO, line);
 		if(matcher.matches()){
-			//TODO: build line object
 			Integer label = Integer.parseInt(matcher.group(1).trim());
 			if(!labels.contains(label)){
 				Logger.PrintError(currentLine, 2);
 			}
-			return true;
+			return new gotoCmd(currentLine, label);
 		}
-		return false;
+		return null;
 	}
 	
 	/**
@@ -165,29 +199,81 @@ public class Parser {
 	 * @param line
 	 * @return
 	 */
-	private boolean checkPrint(String line) {
+	private Line checkPrint(String line) {
 		Matcher matcher = getMatcher(PRINT, line);
 		if(matcher.matches()){
 			String printValue = matcher.group(1);
-			//TODO: build line object
-			return checkBinaryOperation(printValue);
+			if(checkBinaryOperation(printValue)){
+				return new PrintCmd(currentLine, printValue);
+			} else{
+				Logger.error(currentLine, 1);
+				return null;
+			}
 		}
-		return false;
+		return null;
 	}
 	
 	/**
 	 * Check if the given line is an if statement.
-	 * This method calls validateLine to evaluate the command after the if statment. 
+	 * This method calls validateLine to evaluate the command after the if statement. 
 	 * @param line
 	 * @return
 	 */
-	private boolean checkIf(String line) {
+	private Line checkIf(String line) {
 		Matcher matcher = getMatcher(IF, line);
 		if(matcher.matches()){
-			String cmdValue = matcher.group(2);
-			//TODO: build line object
-			return validateLine(cmdValue);
+			String lValue = matcher.group(1);
+			String boolOp = matcher.group(2);
+			String rValue = matcher.group(3);
+			String cmdValue = matcher.group(4);
+			//TODO: change bool
+			IfCmd ifLine = new IfCmd(currentLine, lValue.charAt(0), rValue.charAt(0), BoolOP_e.BIG);
+			addLineObject(currentLine, ifLine);
+			ifLine.setLine(validateLine(cmdValue));
+			return ifLine;
 		}
-		return false;
+		return null;
+	}
+	
+	/**
+	 * Add a line object to the lines map.
+	 * If a line with the same index already exists it
+	 * means it's a nested if command
+	 * @param lineNumber
+	 * @param line
+	 */
+	private void addLineObject(int lineNumber, Line line){
+		if(!lines.containsKey(lineNumber)){
+			lines.put(lineNumber, line);
+		} else{
+			Line originalLine = lines.get(lineNumber);
+			Line innerLine;
+			while(originalLine != null){
+				innerLine = ((IfCmd)originalLine).getLine();
+				if(innerLine != null){
+					originalLine = innerLine;
+				} else{
+					break;
+				}
+			}
+			((IfCmd)originalLine).setLine(line);
+		}
+	}
+	
+	/**
+	 * get the lines-labels hash map
+	 * @return
+	 */
+	public HashMap<Integer, Integer> getLabelsMapping(){
+		return labelsMapping;
+	}
+	
+	/**
+	 * get the lines-lines objects map
+	 * @return
+	 */
+	public HashMap<Integer, Line> getLines(){
+		return lines;
 	}
 }
+

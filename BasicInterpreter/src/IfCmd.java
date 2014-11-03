@@ -12,6 +12,10 @@ public class IfCmd extends Line{
 		this.line = line;
 	}
 	
+	public IfCmd(int lineIndex, char var1, char var2, BoolOP_e boolOP) {
+		this(lineIndex, var1, var2, boolOP, null);
+	}
+	
 	public int run(CodeContext codeContext) {
 		Boolean bool = evalBooleanOP(codeContext, boolOP, var1, var2);
 		if (bool)
