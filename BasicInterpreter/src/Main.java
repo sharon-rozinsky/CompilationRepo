@@ -23,10 +23,6 @@ public class Main {
 
 			inProgramTxtStream.close();
 
-			for(int i=0;i < programTxt.size();i++)
-			{
-				System.out.println(programTxt.get(i));
-			}
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
