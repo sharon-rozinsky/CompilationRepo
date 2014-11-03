@@ -1,10 +1,10 @@
 
 public class IfCmd extends Line{
 	private char var1, var2;
-	private BoolOP_e boolOP;
+	private String boolOP;
 	private Line line;
 	
-	public IfCmd(int lineIndex, char var1, char var2, BoolOP_e boolOP, Line line) {
+	public IfCmd(int lineIndex, char var1, char var2, String boolOP, Line line) {
 		super(lineIndex);
 		this.var1 = var1;
 		this.var2 = var2;
@@ -12,7 +12,7 @@ public class IfCmd extends Line{
 		this.line = line;
 	}
 	
-	public IfCmd(int lineIndex, char var1, char var2, BoolOP_e boolOP) {
+	public IfCmd(int lineIndex, char var1, char var2, String boolOP) {
 		this(lineIndex, var1, var2, boolOP, null);
 	}
 	
@@ -26,29 +26,29 @@ public class IfCmd extends Line{
 		return 1;	
 	}
 	
-	public Boolean evalBooleanOP(CodeContext codeContext, BoolOP_e boolOP, char var1, char var2){
+	public Boolean evalBooleanOP(CodeContext codeContext, String boolOP, char var1, char var2){
 		
 		int v1 = evalVar(codeContext, lineIndex, var1);
 		int v2 = evalVar(codeContext, lineIndex, var2);
 		Boolean res = false;
 		
 		switch (boolOP) {
-		case BIG:
+		case ">":
 			if (v1 > v2) res = true;
 			break;
-		case SMALL:
+		case "<":
 			if (v1 < v2) res = true;	
 			break;
-		case BIG_EQ:
+		case ">=":
 			if (v1 >= v2) res = true;
 			break;
-		case SMALL_EQ:
+		case "<=":
 			if (v1 <= v2) res = true;
 			break;
-		case EQ:
+		case "==":
 			if (v1 == v2) res = true;
 			break;
-		case NOT_EQ:
+		case "!=":
 			if (v1 != v2) res = true;
 			break;
 		default:
@@ -86,11 +86,11 @@ public class IfCmd extends Line{
 		this.var2 = var2;
 	}
 
-	public BoolOP_e getBoolOP() {
+	public String getBoolOP() {
 		return boolOP;
 	}
 
-	public void setBoolOP(BoolOP_e boolOP) {
+	public void setBoolOP(String boolOP) {
 		this.boolOP = boolOP;
 	}
 

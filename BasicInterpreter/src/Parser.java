@@ -227,7 +227,7 @@ public class Parser {
 			String rValue = matcher.group(3);
 			String cmdValue = matcher.group(4);
 			//TODO: change bool
-			IfCmd ifLine = new IfCmd(currentLine, lValue.charAt(0), rValue.charAt(0), BoolOP_e.BIG);
+			IfCmd ifLine = new IfCmd(currentLine, lValue.charAt(0), rValue.charAt(0), boolOp);
 			addLineObject(currentLine, ifLine);
 			ifLine.setLine(validateLine(cmdValue));
 			return ifLine;
