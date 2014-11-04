@@ -79,6 +79,11 @@ public class Expression {
 					evalAns = args.get(argsIndex) * args.get(argsIndex-1);
 					break;
 				case "\\":
+					if(args.get(argsIndex-1) == 0)
+					{
+						Logger.PrintError(lineIndex, 5);
+						throw (new Exception());
+					}
 					evalAns = args.get(argsIndex) / args.get(argsIndex-1);
 					break;
 				default:
