@@ -17,16 +17,21 @@ public class IfCmd extends Line{
 	}
 	
 	public int run(CodeContext codeContext) {
-		int bool = evalBooleanOP(codeContext, boolOP, var1, var2);
-		if (bool==1)
+		int result = evalBooleanOP(codeContext, boolOP, var1, var2);
+		if (result==1)
 		{
-			line.run(codeContext);
+			// Boolean Operation is true 
+			if(line.run(codeContext) == 1)
+			{
+				return 1;
+			}
 		}
-		else if (bool==2)
+		else if (result==2)
 		{
+			// Boolean Operation is false, continue to next command
 			codeContext.setNextCmd(codeContext.getNextCmd()+1);
 		}
-		else // bool = 0
+		else // result = 0
 		{
 			//run time error occurred stop execution.
 			return 1;
