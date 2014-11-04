@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 
@@ -32,51 +34,64 @@ public class Expression {
 		else // Compound expression
 		{
 			calculationStk = new Stack<String>();
-			String[] 	symbols = this.expStr.split(" ");
-			Expression 	argStr;
-			int 		numOfArgs;
-			int[] 		args = new int[2];
-			String 		binOp;
-			
+			String[] 		symbols = this.expStr.split(" ");
+			Expression 		argStr;
+			int 			argsIndex;
+			List<Integer> 	args;
+			String 			binOp;
+
 			for(String symbol:symbols)
 			{
 				calculationStk.push(symbol);
 			}
 			while(calculationStk.size() > 1)
 			{
-				numOfArgs =0;
-				while(numOfArgs < 2)
+				argsIndex =0;
+				args = new ArrayList<Integer>();
+				while(true)
 				{
 					argStr = new Expression(calculationStk.pop());
+					if(argStr.isBinaryOp())
+					{
+						argsIndex--;
+						break;
+					}
 					try {
-						args[numOfArgs] = argStr.evalExpression(codeContext, lineIndex);
+						args.add(argStr.evalExpression(codeContext, lineIndex));
+						argsIndex++;
 					} catch (Exception e) {
 						//run time error occurred stop execution.
 						throw e;
 					}
-					numOfArgs++;
 				}
-				
-				binOp = calculationStk.pop();
-				
+
+				binOp = argStr.expStr;
+
 				switch(binOp)
 				{
 				case "+":
-					evalAns = args[1] + args[0];
+					evalAns = args.get(argsIndex) + args.get(argsIndex-1);
 					break;
 				case "-":
-					evalAns = args[1] - args[0];
+					evalAns = args.get(argsIndex) - args.get(argsIndex-1);
 					break;
 				case "*":
-					evalAns = args[1] * args[0];
+					evalAns = args.get(argsIndex) * args.get(argsIndex-1);
 					break;
 				case "\\":
-					evalAns = args[1] / args[0];
+					evalAns = args.get(argsIndex) / args.get(argsIndex-1);
 					break;
+				default:
+					System.out.println("Debug error");
 				}
-				
+
 				calculationStk.push(Integer.toString(evalAns));
 				
+				for(int i=argsIndex-2;i>=0;i--)
+				{
+					calculationStk.push(args.get(i).toString());
+				}
+
 			}
 			return evalAns;
 		}
@@ -99,6 +114,22 @@ public class Expression {
 			Integer.parseInt(this.expStr);
 			return true;
 		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	private boolean isBinaryOp() {
+		switch(this.expStr)
+		{
+		case "+":
+			return true;
+		case "-":
+			return true;
+		case "*":
+			return true;
+		case "\\":
+			return true;
+		default:
 			return false;
 		}
 	}
