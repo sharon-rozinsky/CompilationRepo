@@ -70,7 +70,7 @@ public class Expression {
 				case "*":
 					evalAns = args[1] * args[0];
 					break;
-				case "/":
+				case "\\":
 					evalAns = args[1] / args[0];
 					break;
 				}

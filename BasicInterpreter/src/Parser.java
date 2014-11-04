@@ -7,14 +7,14 @@ import java.util.regex.Pattern;
 
 public class Parser {
 	public static final String LINE_PATTERN = "(\\d*)\\s:(.*);";
-	public static final String BINARY_OPERATOR = "(\\+|\\*|\\-|\\/)";
+	public static final String BINARY_OPERATOR = "(\\+|\\*|\\-|\\\\)";
 	public static final String VARIABLE = "([a-z])";
 	public static final String NUMBER = "([1-9][0-9]*|0)";
 	public static final String NUMBER_OR_VARIABLE = NUMBER + "|" + VARIABLE;
 	public static final String BOOLEAN_OPERATOR = "(\\<|\\>|\\<=|\\>\\=|\\=\\=|\\!\\=)";
 	
 	public static final String BINARY_EXP = BINARY_OPERATOR + "\\s(.*)\\s(.*)";
-	public static final String ASSIGNMENT = VARIABLE + "\\s*:=\\s*" + "(.*)";
+	public static final String ASSIGNMENT = VARIABLE + "\\s:=\\s" + "(.*)";
 	public static final String GOTO = "goto\\s" + "(" + NUMBER + ")";
 	public static final String PRINT = "print\\((.*)\\)";
 	public static final String IF = "if\\(" + VARIABLE + "\\s" + BOOLEAN_OPERATOR + "\\s" + VARIABLE + "\\)\\s(.*)";  
