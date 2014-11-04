@@ -17,41 +17,50 @@ public class IfCmd extends Line{
 	}
 	
 	public int run(CodeContext codeContext) {
-		Boolean bool = evalBooleanOP(codeContext, boolOP, var1, var2);
-		if (bool)
+		int bool = evalBooleanOP(codeContext, boolOP, var1, var2);
+		if (bool==1)
 		{
 			line.run(codeContext);
 		}
-		else
+		else if (bool==2)
 		{
 			codeContext.setNextCmd(codeContext.getNextCmd()+1);
+		}
+		else // bool = 0
+		{
+			//run time error occurred stop execution.
+			return 1;
 		}
 		return 0;	
 	}
 	
-	public Boolean evalBooleanOP(CodeContext codeContext, String boolOP, char var1, char var2){
+	public int evalBooleanOP(CodeContext codeContext, String boolOP, char var1, char var2){
 		
 		int v1 = evalVar(codeContext, lineIndex, var1);
 		int v2 = evalVar(codeContext, lineIndex, var2);
-		Boolean res = false;
+		if ((v1 == -1) || (v2 == -1))
+		{
+			return 0;
+		}
+		int res = 2;
 		switch (boolOP) {
 		case ">":
-			if (v1 > v2) res = true;
+			if (v1 > v2) res = 1;
 			break;
 		case "<":
-			if (v1 < v2) res = true;	
+			if (v1 < v2) res = 1;	
 			break;
 		case ">=":
-			if (v1 >= v2) res = true;
+			if (v1 >= v2) res = 1;
 			break;
 		case "<=":
-			if (v1 <= v2) res = true;
+			if (v1 <= v2) res = 1;
 			break;
 		case "==":
-			if (v1 == v2) res = true;
+			if (v1 == v2) res = 1;
 			break;
 		case "!=":
-			if (v1 != v2) res = true;
+			if (v1 != v2) res = 1;
 			break;
 		default:
 			break;
