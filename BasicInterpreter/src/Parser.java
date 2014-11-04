@@ -55,6 +55,7 @@ public class Parser {
 				String lineValue = matcher.group(2).trim();
 				if(validateLine(lineValue) == null){
 					Logger.PrintError(currentLine, 1);
+					labels.remove(new Integer(currentLabel));
 				}
 			} else{
 				Logger.PrintError(currentLine, 1);
@@ -206,7 +207,6 @@ public class Parser {
 			if(checkBinaryOperation(printValue)){
 				return new PrintCmd(currentLine, printValue);
 			} else{
-				Logger.error(currentLine, 1);
 				return null;
 			}
 		}
